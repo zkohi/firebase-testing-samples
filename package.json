@@ -1,24 +1,24 @@
 {
-  "name": "firebase-testing-examples",
+  "name": "firebase-testing-samples",
   "version": "1.0.0",
-  "description": "@firebase/testing examples. Cloud Firestore emulator testing, with TypeScript.",
+  "description": "@firebase/testing samples. Cloud Firestore emulator testing, with TypeScript.",
   "scripts": {
     "test": "FIREBASE_FIRESTORE_EMULATOR_ADDRESS='127.0.0.1:8080' jest"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/zkohi/firebase-testing-examples.git"
+    "url": "git+ssh://git@github.com/zkohi/firebase-testing-samples.git"
   },
   "keywords": [
     "firebase",
     "testing"
   ],
-  "author": "zkohi",
+  "author": "zkohi <kohiandrew@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/zkohi/firebase-testing-examples/issues"
+    "url": "https://github.com/zkohi/firebase-testing-samples/issues"
   },
-  "homepage": "https://github.com/zkohi/firebase-testing-examples#readme",
+  "homepage": "https://github.com/zkohi/firebase-testing-samples#readme",
   "devDependencies": {
     "@firebase/testing": "^0.7.8",
     "@types/jest": "^24.0.11",
