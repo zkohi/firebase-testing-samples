@@ -1,0 +1,4 @@
+{
+  "include": ["__tests__/**/*"],
+  "compileOnSave": true
+}

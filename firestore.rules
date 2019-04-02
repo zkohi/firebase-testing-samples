@@ -1,0 +1,46 @@
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return request.auth.token.admin == true
+    }
+
+    function isValidRoomsSubCollectionDocument(rsc) {
+      return request.auth.uid == rsc.data.owner
+    }
+
+    function isValidRoom() {
+      return request.resource.data.keys().hasAll(['owner', 'name'])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+    }
+
+    function isValidRoomMessage() {
+      return request.resource.data.keys().hasAll(['text'])
+        && request.resource.data.text is string
+        && request.resource.data.text.size() > 0
+    }
+
+    match /users/{user} {
+      allow read: if isSignedIn() && request.auth.uid == user
+    }
+
+    match /admins/{admin} {
+      allow read: if isSignedIn() && isAdmin()
+    }
+
+    match /rooms/{room} {
+      allow create: if isSignedIn() && request.auth.uid == request.resource.data.owner && request.resource.data.owner is string && request.resource.data.owner.size() > 0 && isValidRoom()
+      allow update: if isSignedIn() && (isAdmin() || request.auth.uid == resource.data.owner) && request.resource.data.owner == resource.data.owner && isValidRoom()
+      allow read: if isSignedIn() && (isAdmin() || request.auth.uid == resource.data.owner);
+
+      match /messages/{message} {
+        allow create, update: if isSignedIn() && (isAdmin() || isValidRoomsSubCollectionDocument(getAfter(/databases/$(database)/documents/rooms/$(room)))) && isValidRoomMessage()
+        allow read: if isSignedIn() && (isAdmin() || isValidRoomsSubCollectionDocument(get(/databases/$(database)/documents/rooms/$(room))));
+      }
+    }
+  }
+}
