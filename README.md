@@ -27,14 +27,20 @@ If Java runtime does not present, you needs to install.
 
 [Java SE Downloads](https://www.oracle.com/technetwork/java/javase/downloads/index.html)
 
-## Start the firestore emulator (and leave it running during the tests)
+## Start up firestore emulator
 
 ```
-firebase serve --only firestore
+firebase emulators:start --only firestore
 ```
 
 ## Run tests
 
 ```
 npm run test
+```
+
+## Start up firestore emulator, run scripted tests, and shut down emulators
+
+```
+firebase emulators:exec --only firestore "npm run test"
 ```
