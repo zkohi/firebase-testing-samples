@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "@firebase/testing samples. Cloud Firestore emulator testing, with TypeScript.",
   "scripts": {
+    "serve": "firebase emulators:exec --only firestore",
     "test": "FIREBASE_FIRESTORE_EMULATOR_ADDRESS='127.0.0.1:8080' jest"
   },
   "repository": {
