@@ -9,9 +9,22 @@ const getProjectId = () => `${projectIdBase}-${testNumber}`;
 const uid = v4();
 const adminUid = v4();
 const anotherUid = v4();
-const defaultAuth = { uid };
-const anotherUidAuth = { uid: anotherUid };
-const adminAuth = { uid: adminUid, admin: true };
+const notAnonymous = { sign_in_provider: "not-anonymous" };
+const defaultAuth = { uid, firebase: notAnonymous };
+const anonymousAuth = {
+  uid: adminUid,
+  admin: true,
+  firebase: { sign_in_provider: "anonymous" }
+};
+const anotherUidAuth = {
+  uid: anotherUid,
+  firebase: notAnonymous
+};
+const adminAuth = {
+  uid: adminUid,
+  admin: true,
+  firebase: notAnonymous
+};
 const roomId = v4();
 const anotherRoomId = v4();
 const admin = firebase
@@ -69,6 +82,12 @@ describe("firestore.rules", () => {
     describe("read", () => {
       test("should not let logged out users read", async () => {
         const db = authedApp(undefined);
+        const user = db.collection(collection).doc(uid);
+        await firebase.assertFails(user.get());
+      });
+
+      test("should not let anonymous user", async () => {
+        const db = authedApp(anonymousAuth);
         const user = db.collection(collection).doc(uid);
         await firebase.assertFails(user.get());
       });

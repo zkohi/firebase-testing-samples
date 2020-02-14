@@ -4,6 +4,10 @@ service cloud.firestore {
       return request.auth != null;
     }
 
+    function isNotAnonymous() {
+      return request.get(['auth', 'token', 'firebase', 'sign_in_provider'], 'anonymous') != 'anonymous';
+    }
+
     function isAdmin() {
       return request.auth.token.admin == true
     }
@@ -25,7 +29,7 @@ service cloud.firestore {
     }
 
     match /users/{user} {
-      allow read: if isSignedIn() && request.auth.uid == user
+      allow read: if isSignedIn() && request.auth.uid == user && isNotAnonymous()
     }
 
     match /admins/{admin} {
